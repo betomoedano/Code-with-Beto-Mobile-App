@@ -1,5 +1,10 @@
+/**
+ *
+ * This file was strongly inspired by expo docs guide: https://docs.expo.dev/router/reference/authentication
+ *
+ */
 import * as React from "react";
-import { router, useSegments } from "expo-router";
+import { router, useRootNavigationState, useSegments } from "expo-router";
 
 interface User {
   uid: string;
@@ -10,8 +15,14 @@ interface User {
   lastLoginAt: string;
 }
 
+interface ContextInterface {
+  user: User | null;
+  signIn: React.Dispatch<React.SetStateAction<User | null>>;
+  signOut: React.Dispatch<React.SetStateAction<User | null>>;
+}
+
 // create context
-const AuthContext = React.createContext(null);
+const AuthContext = React.createContext<ContextInterface | null>(null);
 
 // This hook can be used to access the user info.
 export function useAuth() {
@@ -27,8 +38,11 @@ export function useAuth() {
 // This hook will protect the route access based on user authentication.
 function useProtectedRoute(user: User | null) {
   const segments = useSegments();
+  const navigationState = useRootNavigationState();
 
   React.useEffect(() => {
+    // this prevent navigation before root navigation is mounted
+    if (!navigationState?.key) return;
     const inAuthGroup = segments[0] === "(auth)";
 
     if (
@@ -37,21 +51,23 @@ function useProtectedRoute(user: User | null) {
       !inAuthGroup
     ) {
       // Redirect to the sign-in page.
-      router.replace("/sign-in");
+      router.replace("/(auth)/sing-in");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      router.replace("/");
+      router.replace("/(tabs)");
     }
-  }, [user, segments]);
+  }, [user, segments, navigationState]);
 }
 
-export function Provider({ children }: React.PropsWithChildren) {
+export function AuthProvider({ children }: React.PropsWithChildren) {
   const [user, setUser] = React.useState<User | null>(null);
 
   useProtectedRoute(user);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider
+      value={{ user, signIn: setUser, signOut: () => setUser(null) }}
+    >
       {children}
     </AuthContext.Provider>
   );
