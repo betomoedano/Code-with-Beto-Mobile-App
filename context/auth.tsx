@@ -5,6 +5,8 @@
  */
 import * as React from "react";
 import { router, useRootNavigationState, useSegments } from "expo-router";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/firebaseConfig";
 
 interface User {
   uid: string;
@@ -63,6 +65,25 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
   const [user, setUser] = React.useState<User | null>(null);
 
   useProtectedRoute(user);
+
+  React.useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const dataWeCareAbout: User = {
+          uid: user.uid,
+          displayName: user.displayName!,
+          photoURL: user.photoURL ?? "",
+          providerId: user.providerId,
+          createdAt: user.metadata.creationTime!,
+          lastLoginAt: user.metadata.lastSignInTime!,
+        };
+        setUser(dataWeCareAbout);
+      } else {
+        console.log("user is not authenticated");
+      }
+    });
+    return unsubscribeAuth;
+  }, []);
 
   return (
     <AuthContext.Provider
