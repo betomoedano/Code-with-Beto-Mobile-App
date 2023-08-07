@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "codewithbeto-mobile",
-    "slug": "codewithbeto-mobile",
+    "name": "codewithbeto",
+    "slug": "codewithbeto",
+    "scheme": "codewithbeto",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -16,13 +16,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.codewithbeto"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "dev.codewithbeto"
     },
     "web": {
       "bundler": "metro",
