@@ -5,6 +5,8 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import { auth } from "@/firebaseConfig";
+import { createTokenWithCode } from "@/utils/createGitHubToken";
+import { Image, StyleSheet, useColorScheme } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -15,25 +17,8 @@ const discovery = {
   revocationEndpoint: `https://github.com/settings/connections/applications/${process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID}`,
 };
 
-async function createTokenWithCode(code: string) {
-  const url =
-    `https://github.com/login/oauth/access_token` +
-    `?client_id=${process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID}` +
-    `&client_secret=${process.env.EXPO_PUBLIC_GITHUB_CLIENT_SECRET}` +
-    `&code=${code}`;
-
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  });
-
-  return res.json();
-}
-
 export default function Auth(): JSX.Element {
+  const currentTheme = useColorScheme();
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID!,
@@ -68,18 +53,36 @@ export default function Auth(): JSX.Element {
   }
 
   return (
-    <View>
-      <Text>Sign In with GitHub</Text>
+    <View style={styles.container}>
+      <Image
+        source={require("../../assets/images/icon.png")}
+        style={{ width: 100, height: 100, marginBottom: 10, borderRadius: 50 }}
+      />
+      <Text style={{ fontSize: 32, fontWeight: "bold", marginBottom: 10 }}>
+        Code with Beto
+      </Text>
+      <Text style={{ marginBottom: 90 }}>Visit codewithbeto.dev today!</Text>
       <Icon.Button
         name="github"
-        color="white"
+        color={currentTheme === "dark" ? "white" : "black"}
         backgroundColor="transparent"
+        size={30}
         onPress={() => {
-          promptAsync();
+          promptAsync({ windowName: "Code with Beto" });
         }}
       >
-        Sign In with Github
+        <Text style={{ fontSize: 17, fontWeight: "500" }}>
+          Sign In with Github
+        </Text>
       </Icon.Button>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
