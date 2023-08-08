@@ -53,7 +53,7 @@ function useProtectedRoute(user: User | null) {
       !inAuthGroup
     ) {
       // Redirect to the sign-in page.
-      router.replace("/(auth)/sing-in");
+      router.replace("/(auth)/sign-in");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
       router.replace("/(tabs)");
@@ -82,7 +82,7 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
         console.log("user is not authenticated");
       }
     });
-    return unsubscribeAuth;
+    return () => unsubscribeAuth();
   }, []);
 
   return (

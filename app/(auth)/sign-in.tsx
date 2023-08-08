@@ -17,7 +17,7 @@ const discovery = {
   revocationEndpoint: `https://github.com/settings/connections/applications/${process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID}`,
 };
 
-export default function Auth(): JSX.Element {
+export default function Index(): JSX.Element {
   const currentTheme = useColorScheme();
   const [request, response, promptAsync] = useAuthRequest(
     {
