@@ -5,8 +5,23 @@
  */
 import * as React from "react";
 import { router, useRootNavigationState, useSegments } from "expo-router";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
+
+const userInitialState = {
+  uid: "",
+  createdAt: "",
+  displayName: "",
+  lastLoginAt: "",
+  photoURL: "",
+  providerId: "",
+};
+
+const contextInitialState: ContextInterface = {
+  user: userInitialState,
+  signIn: () => {},
+  signOut: () => {},
+};
 
 interface User {
   uid: string;
@@ -19,16 +34,16 @@ interface User {
 
 interface ContextInterface {
   user: User | null;
-  signIn: React.Dispatch<React.SetStateAction<User | null>>;
-  signOut: React.Dispatch<React.SetStateAction<User | null>>;
+  signIn: React.Dispatch<React.SetStateAction<User>>;
+  signOut: () => void;
 }
 
 // create context
-const AuthContext = React.createContext<ContextInterface | null>(null);
+const AuthContext = React.createContext<ContextInterface>(contextInitialState);
 
 // This hook can be used to access the user info.
-export function useAuth() {
-  const context = React.useContext(AuthContext);
+export function useAuth(): ContextInterface {
+  const context = React.useContext<ContextInterface>(AuthContext);
 
   if (context === undefined) {
     throw new Error("useAuth must be used within a Provider");
@@ -38,31 +53,28 @@ export function useAuth() {
 }
 
 // This hook will protect the route access based on user authentication.
-function useProtectedRoute(user: User | null) {
+function useProtectedRoute(user: User) {
   const segments = useSegments();
   const navigationState = useRootNavigationState();
 
+  const [hasNavigated, setHasNavigated] = React.useState(false);
+
   React.useEffect(() => {
-    // this prevent navigation before root navigation is mounted
-    if (!navigationState?.key) return;
+    if (!navigationState?.key || hasNavigated) return;
     const inAuthGroup = segments[0] === "(auth)";
 
-    if (
-      // If the user is not signed in and the initial segment is not anything in the auth group.
-      !user &&
-      !inAuthGroup
-    ) {
-      // Redirect to the sign-in page.
+    if (!user.uid && !inAuthGroup) {
       router.replace("/(auth)/sign-in");
-    } else if (user && inAuthGroup) {
-      // Redirect away from the sign-in page.
+      setHasNavigated(true);
+    } else if (user.uid && inAuthGroup) {
       router.replace("/(tabs)");
+      setHasNavigated(true);
     }
-  }, [user, segments, navigationState]);
+  }, [user.uid, segments, navigationState, hasNavigated]);
 }
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<User>(userInitialState);
 
   useProtectedRoute(user);
 
@@ -70,16 +82,18 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const dataWeCareAbout: User = {
-          uid: user.uid,
-          displayName: user.displayName!,
-          photoURL: user.photoURL ?? "",
-          providerId: user.providerId,
+          uid: user.providerData[0].uid,
+          displayName: user.providerData[0].displayName ?? "",
+          photoURL: user.providerData[0].photoURL ?? "",
+          providerId: user.providerData[0].providerId,
           createdAt: user.metadata.creationTime!,
           lastLoginAt: user.metadata.lastSignInTime!,
         };
         setUser(dataWeCareAbout);
+        router.replace("/(tabs)");
       } else {
         console.log("user is not authenticated");
+        router.replace("/(auth)/sign-in");
       }
     });
     return () => unsubscribeAuth();
@@ -87,7 +101,14 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
 
   return (
     <AuthContext.Provider
-      value={{ user, signIn: setUser, signOut: () => setUser(null) }}
+      value={{
+        user,
+        signIn: setUser,
+        signOut: () => {
+          setUser(userInitialState);
+          signOut(auth);
+        },
+      }}
     >
       {children}
     </AuthContext.Provider>
