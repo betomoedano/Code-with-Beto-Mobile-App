@@ -47,6 +47,24 @@ export default function Index(): JSX.Element {
       if (!access_token) return;
       const credential = GithubAuthProvider.credential(access_token);
       const data = await signInWithCredential(auth, credential);
+
+      fetch("https://api.github.com/user/following/betomoedano", {
+        method: "PUT",
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 204) {
+            console.log("Successfully followed!");
+          } else {
+            console.log("Failed to follow.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error following user:", error);
+        });
+
       console.log("credential: ", credential);
       console.log("data: ", JSON.stringify(data, null, 2));
     }
