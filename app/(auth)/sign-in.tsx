@@ -22,7 +22,7 @@ export default function Index(): JSX.Element {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID!,
-      scopes: ["identity"],
+      scopes: ["identity", "user:email", "user:follow"],
       redirectUri: makeRedirectUri(),
     },
     discovery
