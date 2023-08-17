@@ -7,6 +7,7 @@ import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import { auth } from "@/firebaseConfig";
 import { createTokenWithCode } from "@/utils/createGitHubToken";
 import { Image, StyleSheet, useColorScheme } from "react-native";
+import AppleLoginButton from "@/components/AppleLoginButton";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -93,6 +94,7 @@ export default function Index(): JSX.Element {
           Sign In with Github
         </Text>
       </Icon.Button>
+      <AppleLoginButton />
     </View>
   );
 }

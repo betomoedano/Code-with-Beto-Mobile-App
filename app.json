@@ -16,7 +16,8 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "2",
-      "bundleIdentifier": "dev.codewithbeto"
+      "bundleIdentifier": "dev.codewithbeto",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
