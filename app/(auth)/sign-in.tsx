@@ -81,19 +81,21 @@ export default function Index(): JSX.Element {
         Code with Beto
       </Text>
       <Text style={{ marginBottom: 90 }}>Visit codewithbeto.dev today!</Text>
-      <Icon.Button
-        name="github"
-        color={currentTheme === "dark" ? "white" : "black"}
-        backgroundColor="transparent"
-        size={30}
-        onPress={() => {
-          promptAsync({ windowName: "Code with Beto" });
-        }}
-      >
-        <Text style={{ fontSize: 17, fontWeight: "500" }}>
-          Sign In with Github
-        </Text>
-      </Icon.Button>
+      <View>
+        <Icon.Button
+          name="github"
+          color={currentTheme === "dark" ? "white" : "black"}
+          backgroundColor="transparent"
+          size={30}
+          onPress={() => {
+            promptAsync({ windowName: "Code with Beto" });
+          }}
+        >
+          <Text style={{ fontSize: 17, fontWeight: "500" }}>
+            Sign In with Github
+          </Text>
+        </Icon.Button>
+      </View>
       <AppleLoginButton />
     </View>
   );

@@ -47,12 +47,13 @@ export default function AppleLoginButton(): JSX.Element {
     }
   };
 
+  if (!isAppleLoginAvailable) return <></>;
   return (
     <AppleAuthentication.AppleAuthenticationButton
       buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
       buttonStyle={btnStyle}
       cornerRadius={5}
-      style={{ width: 300, height: 44 }}
+      style={{ width: "100%", height: 44 }}
       onPress={handleSignInWithApple}
     />
   );
