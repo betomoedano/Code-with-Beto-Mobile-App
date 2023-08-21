@@ -18,10 +18,11 @@ export default function Profile() {
           />
         )}
 
-        <Text>{user?.displayName}</Text>
+        <Text>Name: {user?.displayName}</Text>
         <Text>{user?.createdAt}</Text>
         <Text>{user?.lastLoginAt}</Text>
         <Text>{user?.providerId}</Text>
+        <Text>{user?.email}</Text>
         <Text>{user?.uid}</Text>
         <Button title="sign out" onPress={signOut} />
       </View>

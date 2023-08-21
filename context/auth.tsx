@@ -15,6 +15,7 @@ const userInitialState = {
   lastLoginAt: "",
   photoURL: "",
   providerId: "",
+  email: "",
 };
 
 const contextInitialState: ContextInterface = {
@@ -30,6 +31,7 @@ interface User {
   providerId: string;
   createdAt: string;
   lastLoginAt: string;
+  email: string;
 }
 
 interface ContextInterface {
@@ -81,11 +83,13 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
   React.useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log(JSON.stringify(user, null, 2));
         const dataWeCareAbout: User = {
-          uid: user.providerData[0].uid,
+          uid: user.uid,
           displayName: user.providerData[0].displayName ?? "",
           photoURL: user.providerData[0].photoURL ?? "",
           providerId: user.providerData[0].providerId,
+          email: user.providerData[0].email ?? "",
           createdAt: user.metadata.creationTime!,
           lastLoginAt: user.metadata.lastSignInTime!,
         };

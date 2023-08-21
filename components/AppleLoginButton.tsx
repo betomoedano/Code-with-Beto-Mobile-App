@@ -40,8 +40,12 @@ export default function AppleLoginButton(): JSX.Element {
         idToken: identityToken!,
         rawNonce: nonce,
       });
-      console.log("Credential for Apple", credential);
-      return await signInWithCredential(auth, credential);
+      // console.log("Credential from Apple", appletAuthCredential);
+      // console.log("Credential", credential);
+
+      const data = await signInWithCredential(auth, credential);
+      // console.log(JSON.stringify(data, null, 2));
+      return data;
     } catch (e) {
       Alert.alert("Something went wrong", "Please try again :(");
     }
