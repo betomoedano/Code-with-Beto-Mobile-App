@@ -2,6 +2,7 @@
 
 /ios
 /android
+/OneSignalCredentials
 .env
 
 # dependencies
