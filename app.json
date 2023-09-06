@@ -15,9 +15,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "2",
+      "buildNumber": "6",
       "bundleIdentifier": "dev.codewithbeto",
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "We use your location to send you relevant push notifications",
+        "NSLocationWhenInUseUsageDescription": "We use your location to send you relevant push notifications",
+        "NSLocationUsageDescription": "We use your location to send you relevant push notifications"
+      }
     },
     "android": {
       "adaptiveIcon": {

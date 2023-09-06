@@ -16,6 +16,7 @@ if (isDevice) {
   OneSignal.initialize(process.env.EXPO_PUBLIC_ONESIGNAL!);
 
   OneSignal.Notifications.requestPermission(true);
+  OneSignal.Location.requestPermission();
 
   OneSignal.Notifications.addEventListener("foregroundWillDisplay", (event) => {
     event.preventDefault();
