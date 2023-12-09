@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { OneSignal } from "react-native-onesignal";
 import { isDevice } from "expo-device";
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "@/appRedux/store";
 
 if (isDevice) {
   OneSignal.initialize(process.env.EXPO_PUBLIC_ONESIGNAL!);
@@ -65,10 +67,12 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <Slot />
-      </AuthProvider>
-    </ThemeProvider>
+    <ReduxProvider store={store}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <AuthProvider>
+          <Slot />
+        </AuthProvider>
+      </ThemeProvider>
+    </ReduxProvider>
   );
 }
