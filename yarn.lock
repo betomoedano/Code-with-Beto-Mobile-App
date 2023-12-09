@@ -6751,10 +6751,10 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   dependencies:
     wrappy "1"
 
-onesignal-expo-plugin@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/onesignal-expo-plugin/-/onesignal-expo-plugin-1.3.2.tgz#7979fc1cf33efe0addb24ce7335cea7d2a0e3f55"
-  integrity sha512-3asutWnAEg9jeJDFVne7VpI9akStYwLkx0k7+CIQB2cQtjw1JAscDGdydTqXlivCNwixlkGrj0KxDPe+RDV5vQ==
+onesignal-expo-plugin@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/onesignal-expo-plugin/-/onesignal-expo-plugin-2.0.2.tgz#92969130e6543d2d3805826b6a7a5c7b67346c1b"
+  integrity sha512-KVzoNCYkZYjRJOpn2k1CcY1PRVuMMnW/XV5zwEGh7MVnXyLIBHD9I2Yf6dlRa6iPE10qBeWmDD3jZuMB1993hg==
   dependencies:
     "@expo/image-utils" "^0.3.22"
 
@@ -7303,10 +7303,10 @@ react-native-gesture-handler@~2.12.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-onesignal@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-5.0.0.tgz#c51b950dc8997b0dedfa6083efde9a1e4470b5b3"
-  integrity sha512-kIouwQoeMXmJeVg8mdvbtTisNejtlMlKW8sU7KdzAge9ZRezTr6ryVPHroiMdjnYBvmZ4UzCtZZrS+Aqarepbw==
+react-native-onesignal@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-5.0.4.tgz#fe09b26955dcbcca03661619205b7a5ed673f5ff"
+  integrity sha512-gnIKTSsRvi8yV2L1fE3FdLzq0UgrROj/zdGO26qV+qnZxT9JRPPGMt/GKO61Qq+SfKKbcRG5ragXx27+lcfDXQ==
   dependencies:
     invariant "^2.2.2"
 
